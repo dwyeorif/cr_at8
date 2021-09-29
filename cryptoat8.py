@@ -95,8 +95,8 @@ while True:
     try:
         if binance_balance('BUSD') > (count*binance_usd_price(ticker)+70) and upbit.get_balance('KRW-' + ticker) > count:  # Premium trading
             if get_premium((binance_usd_price(ticker)*p_exchange), upbit_price(ticker), ticker) > (p_standard+p_gap):  # Above standard
-                upbit_sell(ticker, count)
                 binance_buy(ticker, count)
+                upbit_sell(ticker, count)
                 post_message(myToken, "#stock", 'Premium trading: ' + str(round(get_premium((binance_usd_price(ticker)*p_exchange), upbit_price(ticker), ticker), 2)) + ' / ' + str(count) + 'ea')
                 p_standard = round((p_standard * 0.98) + (get_premium((binance_usd_price(ticker) * p_exchange), upbit_price(ticker), ticker) * 0.02), 9)
                 if binance_balance('BUSD') < (count * binance_usd_price(ticker) + 80):  # Reset
@@ -106,9 +106,9 @@ while True:
 
         if upbit.get_balance('KRW') > mount + 70000 and binance_balance(ticker) > mount/binance_price(ticker, p_exchange):  # Reverse premium trading
             if get_premium((binance_usd_price(ticker)*p_exchange), upbit_price(ticker), ticker) < (p_standard-p_gap):  # Below standard
-                count2 = round(mount / (upbit_price(ticker) + 5), 1) - 1
-                upbit_buy(ticker, mount)
+                count2 = round(mount / (upbit_price(ticker) + 5), 1) - 1                
                 binance_sell(ticker, count2)
+                upbit_buy(ticker, mount)
                 post_message(myToken, "#stock", 'R-premium trading: ' + str(round(get_premium((binance_usd_price(ticker)*p_exchange), upbit_price(ticker), ticker), 2)) + ' / ' + str(count2) + 'ea')
                 p_standard = round((p_standard * 0.98) + (get_premium((binance_usd_price(ticker) * p_exchange), upbit_price(ticker), ticker) * 0.02), 9)
 
